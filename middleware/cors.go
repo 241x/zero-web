@@ -10,26 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CorsMiddleware struct {
-	cfg config.CorsConfig
-}
-
-func NewCorsMiddleware(cfg config.CorsConfig) *CorsMiddleware {
-	return &CorsMiddleware{
-		cfg: cfg,
-	}
-}
-
-// Handle 跨域规则
-func (m *CorsMiddleware) Handle() gin.HandlerFunc {
+// CORS 跨域中间件。
+func CORS(cfg config.CorsConfig) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 设置允许的源
-		if len(m.cfg.AllowOrigins) > 0 {
-			c.Header("Access-Control-Allow-Origin", strings.Join(m.cfg.AllowOrigins, ", "))
+		if len(cfg.AllowOrigins) > 0 {
+			c.Header("Access-Control-Allow-Origin", strings.Join(cfg.AllowOrigins, ", "))
 		}
-		c.Header("Access-Control-Allow-Credentials", strconv.FormatBool(m.cfg.AllowCredentials))
-		c.Header("Access-Control-Allow-Headers", strings.Join(m.cfg.AllowHeaders, ", "))
-		c.Header("Access-Control-Allow-Methods", strings.Join(m.cfg.AllowMethods, ", "))
+		c.Header("Access-Control-Allow-Credentials", strconv.FormatBool(cfg.AllowCredentials))
+		c.Header("Access-Control-Allow-Headers", strings.Join(cfg.AllowHeaders, ", "))
+		c.Header("Access-Control-Allow-Methods", strings.Join(cfg.AllowMethods, ", "))
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)
