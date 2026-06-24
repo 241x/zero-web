@@ -11,16 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// RequestLogger 请求日志中间件，记录请求详情。
-type RequestLogger struct{}
-
-// NewRequestLogger 创建请求日志中间件
-func NewRequestLogger() *RequestLogger {
-	return &RequestLogger{}
-}
-
-// Handle 处理请求
-func (*RequestLogger) Handle() gin.HandlerFunc {
+// RequestLog 请求日志中间件，记录请求详情。
+func RequestLog() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		logger.Ctx(c.Request.Context()).Info("Request",
 			"url", c.Request.URL.Path,
