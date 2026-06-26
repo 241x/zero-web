@@ -12,9 +12,14 @@ import (
 	"time"
 
 	"github.com/241x/zero-kit/logger"
-	"github.com/241x/zero-web/config"
 	"github.com/gin-gonic/gin"
 )
+
+// Config 服务配置
+type Config struct {
+	Host string
+	Port int
+}
 
 // Option Server 可选配置。
 type Option func(*Server)
@@ -34,7 +39,7 @@ type Server struct {
 }
 
 // New 创建 HTTP 服务。
-func New(cfg config.ServerConfig, handler *gin.Engine, log logger.Logger, opts ...Option) *Server {
+func New(cfg Config, handler *gin.Engine, log logger.Logger, opts ...Option) *Server {
 	s := &Server{
 		httpServ: &http.Server{
 			Addr:    fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
